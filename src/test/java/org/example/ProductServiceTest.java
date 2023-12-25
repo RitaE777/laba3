@@ -17,27 +17,29 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class ProductServiceTest {
+    private Filter filter2;
     private GoodsBatch batch;
     private Filter filter;
     @BeforeEach
     void setUp() {
-        ProductPacking smth = new ProductPacking("smth", 1);
-        WeightProduct product1 = new WeightProduct("smth", "smth");
-        WeightProduct product2 = new WeightProduct("smth", "smth");
-        PackingWeightProduct packingProduct1 = new PackingWeightProduct(product1, 3, smth);
-        PackingWeightProduct packingProduct2 = new PackingWeightProduct(product2, 6, smth);
-        PieceProduct product3 = new PieceProduct("smth","smth", 3);
-        PieceProduct product4 = new PieceProduct("smth","smth", 1);
-        PackingPieceProduct packingProduct3 = new PackingPieceProduct(smth, product3, 4);
-        PackingPieceProduct packingProduct4 = new PackingPieceProduct(smth, product4, 4);
+        ProductPacking packing = new ProductPacking("packing", 1);
+        WeightProduct product1 = new WeightProduct("product1", "description of product1");
+        WeightProduct product2 = new WeightProduct("product2", "description of product1");
+        PackingWeightProduct packingProduct1 = new PackingWeightProduct(product1, 3, packing);
+        PackingWeightProduct packingProduct2 = new PackingWeightProduct(product2, 6, packing);
+        PieceProduct product3 = new PieceProduct("product3","description of product3", 3);
+        PieceProduct product4 = new PieceProduct("product4","description of product4", 1);
+        PackingPieceProduct packingProduct3 = new PackingPieceProduct(packing, product3, 4);
+        PackingPieceProduct packingProduct4 = new PackingPieceProduct(packing, product4, 4);
         ProductInterface[] test = new ProductInterface[]{packingProduct1, packingProduct2, packingProduct3, packingProduct4};
         batch = new GoodsBatch("test", test);
-        filter = new ContainStringFilter("smth");
+        filter = new ContainStringFilter("product1");
+        filter2 = new ContainStringFilter("product0");
     }
     @Test
     public void testCountByFilter() {
-        assertEquals(4, ServiceProduct.countByFilter(batch, filter));
-
+        assertEquals(1, ServiceProduct.countByFilter(batch, filter));
+        assertEquals(0, ServiceProduct.countByFilter(batch, filter2));
     }
 
 
